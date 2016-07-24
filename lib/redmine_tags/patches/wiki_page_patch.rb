@@ -20,6 +20,10 @@ module RedmineTags
               project = project.id if project.is_a? Project
               where "#{ Project.table_name }.id = ?", project
             }
+          scope :on_wiki_page, ->(wiki_page) {
+            wiki_page = wiki_page.id if wiki_page.is_a? WikiPage
+            where "#{ WikiPage.table_name }.id = ?", wiki_page
+          }
           WikiPage.safe_attributes 'tag_list'
         end
       end
@@ -29,10 +33,18 @@ module RedmineTags
         # === Parameters
         # * <i>options</i> = (optional) Options hash of
         #   * project   - Project to search in.
+        #   * page      - Wiki Page
         #   * name_like - String. Substring to filter found tags.
         def available_tags(options = {})
           ids_scope = WikiPage.select("#{WikiPage.table_name}.id").joins(:wiki => :project)
           ids_scope = ids_scope.on_project(options[:project]) if options[:project]
+
+          # show all tags from project on project wiki page
+          # but show only wiki page's tags on wiki pages
+          if options[:page].title != 'Wiki'
+            ids_scope = ids_scope.on_wiki_page(options[:page]) if options[:page]
+          end
+
           conditions = ['']
 
           sql_query = ids_scope.to_sql

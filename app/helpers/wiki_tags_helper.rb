@@ -3,7 +3,7 @@ module WikiTagsHelper
     unless @sidebar_tags
       @sidebar_tags = []
       if :none != RedmineTags.settings[:issues_sidebar].to_sym
-        @sidebar_tags = WikiPage.available_tags project: @project,
+        @sidebar_tags = WikiPage.available_tags project: @project, page: @page,
           open_only: (RedmineTags.settings[:issues_open_only].to_i == 1)
       end
     end
