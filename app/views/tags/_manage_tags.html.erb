@@ -1,4 +1,4 @@
-<% tags = Issue.available_tags.order(:name) %>
+<% tags = ActsAsTaggableOn::Tag.all.order(:name) %>
 <% unless tags.empty? %>
   <table class="list issues">
     <thead>
