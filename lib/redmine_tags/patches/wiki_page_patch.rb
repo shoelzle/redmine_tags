@@ -40,9 +40,10 @@ module RedmineTags
           # return all tags
           if options[:all_tags]
             if options[:name_like]
-              return ActsAsTaggableOn::Tag.named_like options[:name_like]
+              filtered_tags = ActsAsTaggableOn::Tag.named_like options[:name_like]
+              return filtered_tags.order(:name)
             else
-              return ActsAsTaggableOn::Tag.all
+              return ActsAsTaggableOn::Tag.all.order(:name)
             end
           end
 
