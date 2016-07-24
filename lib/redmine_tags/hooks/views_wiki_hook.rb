@@ -54,6 +54,7 @@ module RedmineTags
 
       def view_layouts_base_sidebar(context = {})
         controller = context[:controller]
+        context[:page] = controller.instance_variable_get '@page'
         action = controller.action_name
         if controller.is_a?(WikiController) &&
            (action == 'index' || action == 'show' || action == 'date_index')
