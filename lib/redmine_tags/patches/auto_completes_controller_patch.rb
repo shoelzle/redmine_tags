@@ -14,7 +14,8 @@ module RedmineTags
 
         def wiki_tags
           @name = params[:q].to_s
-          @tags = WikiPage.available_tags project: @project, name_like: @name
+          @all_tags = TRUE
+          @tags = WikiPage.available_tags name_like: @name, all_tags: @all_tags
           render layout: false, partial: 'tag_list'
         end
       end

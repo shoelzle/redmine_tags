@@ -35,13 +35,23 @@ module RedmineTags
         #   * project   - Project to search in.
         #   * page      - Wiki Page
         #   * name_like - String. Substring to filter found tags.
+        #   * all_tags  - filter name_like from all tags
         def available_tags(options = {})
+          # return all tags
+          if options[:all_tags]
+            if options[:name_like]
+              return ActsAsTaggableOn::Tag.named_like options[:name_like]
+            else
+              return ActsAsTaggableOn::Tag.all
+            end
+          end
+
           ids_scope = WikiPage.select("#{WikiPage.table_name}.id").joins(:wiki => :project)
           ids_scope = ids_scope.on_project(options[:project]) if options[:project]
 
           # show all tags from project on project wiki page
           # but show only wiki page's tags on wiki pages
-          if options[:page].title != 'Wiki'
+          if options[:page] and options[:page].title != 'Wiki'
             ids_scope = ids_scope.on_wiki_page(options[:page]) if options[:page]
           end
 
