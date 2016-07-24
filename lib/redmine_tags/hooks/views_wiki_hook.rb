@@ -10,13 +10,24 @@ module RedmineTags
           context[:page] = controller.instance_variable_get '@page'
           return '' unless context[:page]
           if action == 'show'
-            hook_res = view_wiki_show_bottom context
-            scripts = ''
-            hook_res.scan(/<script.*<\/script>/m) {|m| scripts += m }
-            hook_res.gsub! /<script.*<\/script>/m, ' '
-            hook_res.gsub! /\n/, " \\\n"
-            hook_res = javascript_tag "$('.attachments').before('#{ hook_res }')"
-            hook_res += scripts.html_safe
+            # for some reason action show is used for creating new wiki pages
+            if context[:page].instance_variable_get '@new_record'
+              hook_res = view_wiki_form_bottom context
+              scripts = ''
+              hook_res.scan(/<script.*<\/script>/m) {|m| scripts += m }
+              hook_res.gsub! /<script.*<\/script>/m, ' '
+              hook_res.gsub! /\n/, " \\\n"
+              hook_res = javascript_tag "$('#content_comments').parent().after('#{ hook_res }')"
+              hook_res += scripts.html_safe
+            else
+              hook_res = view_wiki_show_bottom context
+              scripts = ''
+              hook_res.scan(/<script.*<\/script>/m) {|m| scripts += m }
+              hook_res.gsub! /<script.*<\/script>/m, ' '
+              hook_res.gsub! /\n/, " \\\n"
+              hook_res = javascript_tag "$('.attachments').before('#{ hook_res }')"
+              hook_res += scripts.html_safe
+            end
           elsif action == 'edit'
             hook_res = view_wiki_form_bottom context
             scripts = ''
