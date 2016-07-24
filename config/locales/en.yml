@@ -1,5 +1,7 @@
 en:
   tags: Tags
+  project_tags: Project Tags
+  page_tags: Page Tags
   field_tags: Tags
   field_tag_list: Tags
   setting_issue_tags: Issues Tags

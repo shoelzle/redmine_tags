@@ -1,5 +1,7 @@
 de:
   tags: Tags
+  project_tags: Tags des Projekts
+  page_tags: Tags der Seite
   field_tags: Tags
   field_tag_list: Tags
   setting_issue_tags: Ticket Tags

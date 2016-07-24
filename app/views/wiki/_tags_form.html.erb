@@ -1,5 +1,5 @@
 <p id="wiki_tags">
-  <%= label_tag l(:tags), nil, for: :wiki_page_tag_list %>
+  <label><%= l(:page_tags) %></label>
   <%= text_field_tag 'wiki_page[tag_list]', page.tag_list.to_s, class: 'hol',
         size: 60, id: :wiki_page_tag_list %>
 </p>
